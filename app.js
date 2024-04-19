@@ -9,8 +9,10 @@ const Prescription = require("./models/prescription.js");
 const Counter = require("./models/counter.js");
 const session = require('express-session');
 const flash = require('connect-flash');
-const parser = require('./serial.js');
+// const parser = require('./serial.js');
 const Pulse=require("./models/pulse.js");
+const { SerialPort } = require('serialport');
+const { ReadlineParser } = require('@serialport/parser-readline');
 
 app.use(express.urlencoded({ extended: true }));
 app.engine('ejs', engine);
@@ -21,7 +23,7 @@ app.set("view engine", "ejs");
 
 //Mongo Initialisation
 
-const Mongo_URL = 'mongodb://127.0.0.1:27017/Medicine';
+const Mongo_URL = "mongodb+srv://sabick:db123atlas@cluster0.vh2sqbo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 main().then(() => {
     console.log("Database connected");
@@ -65,7 +67,7 @@ app.use((req, res, next) => {
 });
 
 
-const getRfid = () => {
+const getRfid = (parser) => {
     return new Promise((resolve, reject) => {
         parser.on('data', (data) => {
             resolve(data);
@@ -94,7 +96,14 @@ app.get('/all-medicines', async (req, res) => {
 
 app.get("/patient", async (req, res) => {
     try {
-        let rfid = await getRfid();
+        const port = new SerialPort({ path: '/dev/ttyUSB0', baudRate: 9600 },function (err) {
+            if (err) {
+              res.send("connect rfid tag");
+            }
+          });
+        
+        const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+        let rfid = await getRfid(parser);
         let patient = await Patient.findOne({ rfid: rfid });
         if (patient) {
             res.redirect(`/patient/show/${patient.patientId}`);
@@ -149,8 +158,13 @@ app.get("/prescription/show", async (req, res) => {
 
 app.get("/prescription/latest",async(req,res)=>{
     try {
-        console.log("coming")
-        let rfid = await getRfid();
+        const port = new SerialPort({ path: '/dev/ttyUSB0', baudRate: 9600 },function (err) {
+            if (err) {
+              res.send("connect rfid tag");
+            }
+          });
+        const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+        let rfid = await getRfid(parser);
         let patient = await Patient.findOne({ rfid: rfid });
         if (patient) {
            let prescriptions=await Prescription.find({patient:patient._id}).populate('medicines').populate('patient');

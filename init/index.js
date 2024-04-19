@@ -5,8 +5,7 @@ const Prescription=require("../models/prescription.js");
 const mongoose = require('mongoose');
 const initData=require("./data.js");
 
-const Mongo_URL = 'mongodb://127.0.0.1:27017/Medicine';
-
+const Mongo_URL = "mongodb+srv://sabick:db123atlas@cluster0.vh2sqbo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 main().then(() => {
     console.log("Database connected");
 }).catch((err) => {
@@ -16,6 +15,7 @@ main().then(() => {
 async function main() {
     await mongoose.connect(Mongo_URL);
 }
+
 
 const reset= async()=>{
     await Counter.deleteMany({});
