@@ -1,0 +1,19 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+    <div>
+        <%for(ele of pulses){%>
+        <div class="row">
+            <div class="col-8 offset-4 mt-5">
+                <div class="card" style="width: 25rem;">
+                  <hr>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Pulse Reading: <%=ele.value%></li>
+                        <li class="list-group-item"> Created at : <%=ele.createdAt.toLocaleString()%></li>
+                    </ul>
+                    
+                  </div>
+            </div>
+
+        </div>
+        <%}%>
+    </div>

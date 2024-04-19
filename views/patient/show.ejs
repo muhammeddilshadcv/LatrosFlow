@@ -1,0 +1,40 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+    <div>
+        <!-- <form class="d-flex col-4 offset-4 mt-5" role="search" action="/patient/show">
+            <input class="form-control me-2" type="search" name="id" placeholder="Enter Patient Id" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form> -->
+        <div class="row">
+                <div class="card mt-5 col-6 offset-3">
+                    <h5 class="card-header">Patient Details</h5>
+                    <div class="card-body">
+                      <h5 class="card-title"><%= ele.name.toUpperCase() %></h5>
+                      <p class="card-text"> Id : <%= ele.patientId %></p>
+                      <p class="card-text"> Contact No : <%= ele.contact %></p>
+                      <p class="card-text"> Email : <%= ele.email %></p>
+                    </div>
+                </div>
+                <div class="card mt-5 col-6 offset-3" style="text-align: center;">
+                    <div class="card-body">
+                      <p class="card-text">Create and Show Prescription Details</p>
+                    </div>
+                    <div class="card-body">
+                      <a href="/prescription/new/<%=ele.patientId%>" class="btn btn-primary" >New Prescription</a>
+                      <a href="/prescription/<%=ele.patientId%>" class="btn btn-primary btn">Show Prescription Details</a>
+                    </div>
+                </div>
+                <div class="card mt-5 col-6 offset-3" style="text-align: center;">
+                  <div class="card-body">
+                    <p class="card-text">Record and Show Pulse Details</p>
+                  </div>
+                  <div class="card-body">
+                    <a href="/pulse/new/<%=ele.patientId%>" class="btn btn-primary" >New Record</a>
+                    <a href="/pulse/show/<%=ele.patientId%>" class="btn btn-primary btn">Show Pulse Details</a>
+                  </div>
+              </div>
+            </div>
+            
+        </div>
+
+    </div>

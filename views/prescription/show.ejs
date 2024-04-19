@@ -1,0 +1,33 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+    <div>
+        <form class="d-flex col-4 offset-4 mt-5" role="search" action="/prescription/show">
+            <input class="form-control me-2" type="search" name="id" placeholder="Enter Prescription Id" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <div class="row">
+            <div class="col-8 offset-4 mt-5">
+                <div class="card" style="width: 25rem;">
+                    <div class="card-header">
+                      Medicines :
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <%for(medicine of ele.medicines){%>
+                      <li class="list-group-item"><%=medicine.name%> , Rs. <%=medicine.price.toLocaleString("en-IN")%></li>
+                        <%}%>
+                        <li class="list-group-item"> Created at : <%=ele.createdAt.toLocaleString()%></li>
+                        <li class="list-group-item">&nbsp;&nbsp;&nbsp;&nbsp;Total Price :-  Rs. <%=total.toLocaleString("en-IN")%></li>
+                    </ul>
+                  </div>
+                <div class="card mt-5" style="width: 25rem;">
+                    <h5 class="card-header">Patient Details</h5>
+                    <div class="card-body">
+                      <h5 class="card-title"><%= ele.patient.name.toUpperCase() %></h5>
+                      <p class="card-text"> Contact No : <%= ele.patient.contact %></p>
+                      <p class="card-text"> Email : <%= ele.patient.email %></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

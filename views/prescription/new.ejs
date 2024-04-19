@@ -1,0 +1,29 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+        <div class="row">
+            <div class="col-8 offset-2 mt-5">
+                <h2 class="mt-4">Enter Prescription Details</h2>
+                <form id="prescriptionForm" action="/prescription" method="POST" class="mt-5">
+                    <div>
+                        <label for="patientId" class="form-label">Patient Id</label>
+                        <input type="number" name="id" id="patientId" class="form-control" value="<%=id%>" required readonly>
+                    </div>
+                    <div id="medicineInputs">
+                        <!-- Medicine input fields will be added here -->
+                    </div>
+                    <button type="button" class="btn btn-outline-success" id="addMedicineButton">Add Medicine</button>
+                    <button type="submit" class="btn btn-outline-primary m-5">Submit Prescription</button>
+                </form>
+
+                <!-- Template for medicine input -->
+                <template id="medicineInputTemplate">
+                    <div class="medicineInput">
+                        <label for="medicines" class="form-label">Medicine Name:</label>
+                        <select name="medicines" class="medicineNameSelect form-control">
+                            <!-- Options will be added dynamically -->
+                        </select>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+    <script src="/js/prescription.js"></script>

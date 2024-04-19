@@ -1,0 +1,11 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div>
+    <form class="d-flex col-4 offset-4 mt-5" role="search" action="/prescription/show">
+        <input class="form-control me-2" type="search"  name="id" placeholder="Enter Prescription Id" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>  
+      <form action="/prescription/latest" class="d-flex col-4 offset-4 mt-5">
+        <button class="btn btn-outline-primary">Show latest Prescription</button>
+      </form>
+</div>

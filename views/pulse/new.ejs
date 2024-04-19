@@ -1,0 +1,22 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<div style="margin-top: 100px;">
+    <form action="/pulse" method="post">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h2> Enter Pulse Details</h2>
+                <div>
+                    <label for="patientId" class="form-label">Patient Id</label>
+                    <input type="number" name="id" id="patientId" class="form-control" value="<%=id%>" required readonly>
+                </div>
+                <div>
+                    <label for="pulse" class="form-label">Pulse</label>
+                    <input type="number" name="value" id="pulse" class="form-control"required>
+                </div>
+                <div class="mt-5">
+                    <button class="btn btn-outline-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+</div>

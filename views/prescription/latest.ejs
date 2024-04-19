@@ -1,0 +1,21 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+
+<div class="row">
+    <div class="col-8 offset-4 mt-5">
+        <div class="card" style="width: 25rem;">
+          <h5>Prescription Id: <%= prescriptionId%></h5>
+          <br><br>
+          <hr>
+            <div class="card-header">
+              Medicines :
+            </div>
+            <ul class="list-group list-group-flush">
+                <%for(medicine of medicines){%>
+              <li class="list-group-item"><%=medicine.name%> , Rs. <%=medicine.price.toLocaleString("en-IN")%></li>
+                <%}%>
+                <li class="list-group-item"> Created at : <%=createdAt.toLocaleString()%></li>
+            </ul>
+          </div>
+    </div>
+</div>
