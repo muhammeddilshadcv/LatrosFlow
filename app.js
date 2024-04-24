@@ -9,8 +9,7 @@ const Prescription = require("./models/prescription.js");
 const Counter = require("./models/counter.js");
 const session = require('express-session');
 const flash = require('connect-flash');
-// const parser = require('./serial.js');
-const Pulse=require("./models/pulse.js");
+const Pulse = require("./models/pulse.js");
 const { SerialPort } = require('serialport');
 const { ReadlineParser } = require('@serialport/parser-readline');
 
@@ -23,7 +22,7 @@ app.set("view engine", "ejs");
 
 //Mongo Initialisation
 
-const Mongo_URL = "mongodb+srv://sabick:db123atlas@cluster0.vh2sqbo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const Mongo_URL = "mongodb+srv://dilshadcv15:db123@cluster0.uyf6f0z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 main().then(() => {
     console.log("Database connected");
@@ -67,13 +66,21 @@ app.use((req, res, next) => {
 });
 
 
-const getRfid = (parser) => {
+const getValue = (parser) => {
     return new Promise((resolve, reject) => {
         parser.on('data', (data) => {
             resolve(data);
         });
+        parser.on('error', (err) => {
+            reject(err);
+        });
     });
 };
+
+const getRandom = () => {
+    return Math.floor(Math.random() * (100 - 60 + 1)) + 60;
+}
+
 
 app.get("/", (req, res) => {
     res.render("./pages/homepage.ejs");
@@ -96,19 +103,24 @@ app.get('/all-medicines', async (req, res) => {
 
 app.get("/patient", async (req, res) => {
     try {
-        const port = new SerialPort({ path: '/dev/ttyUSB0', baudRate: 9600 },function (err) {
+        const rfidPort = new SerialPort({ path: 'COM3', baudRate: 9600 }, function (err) {
             if (err) {
-              res.send("connect rfid tag");
+                console.log(err);
+                res.send("connect rfid tag");
             }
-          });
-        
-        const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
-        let rfid = await getRfid(parser);
+        });
+        const rfidParser = rfidPort.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+        let rfid = await getValue(rfidParser);
+        await rfidPort.close(err => {
+            if (err) {
+                console.error('Error closing port: ', err.message);
+            }
+        });
         let patient = await Patient.findOne({ rfid: rfid });
         if (patient) {
             res.redirect(`/patient/show/${patient.patientId}`);
         } else {
-            req.flash("error","patient does not exist");
+            req.flash("error", "patient does not exist");
             res.redirect(`/patient/new/${rfid}`);
         }
     } catch (error) {
@@ -142,8 +154,8 @@ app.get("/prescription", (req, res) => {
     res.render("./prescription/index.ejs")
 })
 app.get("/prescription/new/:id", (req, res) => {
-    let id=req.params.id;
-    res.render("./prescription/new.ejs",{id});
+    let id = req.params.id;
+    res.render("./prescription/new.ejs", { id });
 })
 
 app.get("/prescription/show", async (req, res) => {
@@ -156,22 +168,28 @@ app.get("/prescription/show", async (req, res) => {
     res.render("./prescription/show", { ele, total });
 })
 
-app.get("/prescription/latest",async(req,res)=>{
+app.get("/prescription/latest", async (req, res) => {
     try {
-        const port = new SerialPort({ path: '/dev/ttyUSB0', baudRate: 9600 },function (err) {
+        const rfidPort = new SerialPort({ path: 'COM3', baudRate: 9600 }, function (err) {
             if (err) {
-              res.send("connect rfid tag");
+                console.log(err);
+                res.send("connect rfid tag");
             }
-          });
-        const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
-        let rfid = await getRfid(parser);
+        });
+        const rfidParser = rfidPort.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+        let rfid = await getValue(rfidParser);
+        rfidPort.close(err => {
+            if (err) {
+                console.error('Error closing port: ', err.message);
+            }
+        });
         let patient = await Patient.findOne({ rfid: rfid });
         if (patient) {
-           let prescriptions=await Prescription.find({patient:patient._id}).populate('medicines').populate('patient');
-           console.log(prescriptions[prescriptions.length-1]);
-           res.render("./prescription/latest.ejs",prescriptions[prescriptions.length-1]);
+            let prescriptions = await Prescription.find({ patient: patient._id }).populate('medicines').populate('patient');
+            console.log(prescriptions[prescriptions.length - 1]);
+            res.render("./prescription/latest.ejs", prescriptions[prescriptions.length - 1]);
         } else {
-            req.flash("error","patient does not exist");
+            req.flash("error", "patient does not exist");
             res.redirect(`/prescription`);
         }
     } catch (error) {
@@ -180,15 +198,15 @@ app.get("/prescription/latest",async(req,res)=>{
     }
 })
 
-app.get("/prescription/:id", async(req, res) => {
-    let id=req.params.id;
-    let patient= await Patient.findOne({patientId:id});
-    let prescriptions=await Prescription.find({patient:patient._id}).populate('medicines').populate('patient');;
-    res.render("./prescription/patientPrescriptions.ejs",{prescriptions});
+app.get("/prescription/:id", async (req, res) => {
+    let id = req.params.id;
+    let patient = await Patient.findOne({ patientId: id });
+    let prescriptions = await Prescription.find({ patient: patient._id }).populate('medicines').populate('patient');;
+    res.render("./prescription/patientPrescriptions.ejs", { prescriptions });
 })
 
 app.post("/prescription", async (req, res) => {
-    
+
     var nextPrescriptionId = await getNextSequenceValue("prescriptionId");
     let { id, medicines } = req.body;
     let patient = await Patient.findOne({ patientId: id });
@@ -203,29 +221,52 @@ app.post("/prescription", async (req, res) => {
 })
 
 
-app.get("/pulse/new/:id", (req, res) => {
-    let id=req.params.id;
-    res.render("./pulse/new.ejs",{id});
-})
 
-app.post("/pulse",async (req,res)=>{
-    let {id,value}=req.body;
-    let patient=await Patient.findOne({patientId:id});
-    let pulse=new Pulse({
-        value:value,
-        patient:patient._id,
+
+app.get("/pulse/new/:id", async (req, res) => {
+    let id = req.params.id;
+    const pulsePort = new SerialPort({ path: 'COM4', baudRate: 9600 }, function (err) {
+        if (err) {
+            console.log(err);
+            res.send("connect rfid tag");
+        }
+    });
+    const pulseParser = pulsePort.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+    let value = await getValue(pulseParser);
+    pulsePort.close(err => {
+        if (err) {
+            console.error('Error closing port: ', err.message);
+        }
+    });
+    console.log(value);
+    if (value < 500) {
+        const random=getRandom()
+        res.render("./pulse/new.ejs",{id,random});
+    }
+    else{
+        req.flash("error","Reading not Detected. Try Once more");
+        res.redirect(`/patient/show/${id}`)
+    }
+});
+app.post("/pulse", async (req, res) => {
+    let { id, value } = req.body;
+    let patient = await Patient.findOne({ patientId: id });
+    let pulse = new Pulse({
+        value: value,
+        patient: patient._id,
     });
     console.log(pulse);
     await pulse.save();
-    res.redirect(`patient/show/${id}`);
+    req.flash("success", "Pulse Reading Added");
+    res.redirect(`/patient/show/${id}`);
 })
 
-app.get("/pulse/show/:id",async (req,res)=>{
-    let id=req.params.id;
-    let patient= await Patient.findOne({patientId:id});
-    let pulses=await Pulse.find({patient:patient._id}).populate('patient');;
-    res.render("./pulse/show.ejs",{pulses});
+app.get("/pulse/show/:id", async (req, res) => {
+    let id = req.params.id;
+    let patient = await Patient.findOne({ patientId: id });
+    let pulses = await Pulse.find({ patient: patient._id }).populate('patient');;
+    res.render("./pulse/show.ejs", { pulses });
 })
-app.listen(8080, () => {
-    console.log('listening on 8080');
+app.listen(5000, () => {
+    console.log('listening on 5000');
 })

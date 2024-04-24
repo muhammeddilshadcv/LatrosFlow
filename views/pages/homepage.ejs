@@ -7,7 +7,7 @@
           <p class="card-text">Create and Show Patient Details</p>
         </div>
         <div class="card-body">
-          <a href="/patient" class="btn btn-primary" >Patient Portal</a>
+          <a href="/patient" id="patientBtn"   class="btn btn-primary" >Patient Portal</a>
         </div>
     </div>
     <div class="card col-6 offset-2 mt-5" style="text-align: center;">
@@ -19,3 +19,12 @@
         </div>
     </div>
 </div>
+
+<script>
+  let patientBtn = document.getElementById('patientBtn');
+  patientBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.alert("Scan Your RFID Card to get the Patient Details.")
+    window.location.href = "/patient";
+  });
+</script>

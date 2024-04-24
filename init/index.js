@@ -5,7 +5,7 @@ const Prescription=require("../models/prescription.js");
 const mongoose = require('mongoose');
 const initData=require("./data.js");
 
-const Mongo_URL = "mongodb+srv://sabick:db123atlas@cluster0.vh2sqbo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const Mongo_URL = "mongodb+srv://dilshadcv15:db123@cluster0.uyf6f0z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 main().then(() => {
     console.log("Database connected");
 }).catch((err) => {

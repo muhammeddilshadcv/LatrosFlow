@@ -6,6 +6,15 @@
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>  
       <form action="/prescription/latest" class="d-flex col-4 offset-4 mt-5">
-        <button class="btn btn-outline-primary">Show latest Prescription</button>
+        <button   id="latestPrescriptionBtn"  class="btn btn-outline-primary">Show latest Prescription</button>
       </form>
 </div>
+
+<script>
+  let latestPrescriptionBtn=document.getElementById('latestPrescriptionBtn');
+  latestPrescriptionBtn.addEventListener('click',(e)=>{
+    e.preventDefault();
+    window.alert("Scan Your Rfid Tag to get latest Prescription");
+    window.location.href="/prescription/latest";
+  });
+</script>

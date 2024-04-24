@@ -29,7 +29,7 @@
                     <p class="card-text">Record and Show Pulse Details</p>
                   </div>
                   <div class="card-body">
-                    <a href="/pulse/new/<%=ele.patientId%>" class="btn btn-primary" >New Record</a>
+                    <a href="/pulse/new/<%=ele.patientId%>" id="pulseBtn"  class="btn btn-primary" >New Record</a>
                     <a href="/pulse/show/<%=ele.patientId%>" class="btn btn-primary btn">Show Pulse Details</a>
                   </div>
               </div>
@@ -38,3 +38,11 @@
         </div>
 
     </div>
+    <script>
+      let pulseBtn=document.getElementById('pulseBtn');
+      pulseBtn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        window.alert("Place your Finger in Pulse Meter")
+        window.location.href="/pulse/new/<%=ele.patientId%>";
+      });
+    </script>

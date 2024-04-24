@@ -11,13 +11,8 @@
 </head>
 
 <body>
+    <%- include("../includes/navbar.ejs") %>
     <%- include("../includes/flash.ejs") %>
-    <div id="rfid-modal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <p>Please scan your RFID tag.</p>
-        </div>
-      </div>
     <div class="elements">
         <%- body -%>
     </div>
