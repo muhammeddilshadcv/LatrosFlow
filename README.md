@@ -1,44 +1,65 @@
 # LatrosFlow - Smart Hospital Management System 🏥
 
-LatrosFlow is an IoT-integrated Hospital Management System designed to streamline patient intake, basic diagnostics, and record-keeping through an intelligent kiosk setup. It combines software, sensors, and embedded hardware to enable real-time health data collection and efficient hospital operations.
+LatrosFlow is a smart IoT-based hospital management system that automates patient check-in, vital checks, and record-keeping through a kiosk and sensor interface.
 
-## 💡 Key Features
+---
 
-- 🔍 **Smart Kiosk**: Self-service patient registration and check-in.
-- 🌡️ **Primary Health Screening**: Real-time vitals collection (e.g., temperature, pulse, SPO2, etc.) using sensors.
-- 🩺 **Automated Triage**: Basic medical categorization based on sensor data.
-- 🧾 **Database Integration**: Stores patient records and vitals securely.
-- 📊 **Live Dashboard**: Admin dashboard for monitoring patient data and flow.
-- 🖥️ **User Roles**: Supports admin, doctor, and patient interfaces.
-- 🔐 **Secure Access**: Login system for authorized users.
-- 🌐 **Web Interface**: User-friendly UI for hospital staff and patients.
+## 🚀 Features
+
+- Self-service patient kiosk
+- Real-time sensor-based vital check (temperature, pulse, etc.)
+- Admin and doctor dashboards
+- Role-based login system
+- ESP32 sensor integration
+- Web-based UI
+
+---
 
 ## 📁 Project Structure
 
 LatrosFlow/
-│
-├── Backend/ # Django/Flask backend server (APIs & DB)
-├── Frontend/ # Web UI (HTML/CSS/JS or React)
-├── Hardware/ # Arduino/ESP32 code & sensor integration
-├── Database/ # SQL schema or DB dump
-├── Media/ # Project images, diagrams, or mockups
-└── README.md
+- frontend/
+  - index.html
+- backend/
+  - app.py
+  - requirements.txt
+  - templates/
+    - login.html
+- hardware/
+  - esp32_kiosk.ino
+- database/
+  - schema.sql
+- media/
+  - kiosk_ui.png
+  - sensor_setup.png
+- LICENSE
+- README.md
 
+---
 
-## 🧰 Technologies Used
+## 🧰 Tech Stack
 
-- **Frontend**: HTML5, CSS3, Bootstrap, JavaScript
-- **Backend**: Python (Flask/Django)
-- **Database**: MySQL / SQLite
-- **IoT Hardware**: ESP32, DHT22, Pulse Sensor, IR Sensor, etc.
-- **Communication**: Serial/HTTP
-- **Platform**: Kiosk or Raspberry Pi/ESP32-based embedded setup
+- Frontend: HTML, CSS, Bootstrap, JavaScript
+- Backend: Python (Flask or Django)
+- Database: MySQL / SQLite
+- IoT: ESP32 with sensors (DHT22, Pulse, etc.)
+- Communication: REST API / Serial
 
-## 🚀 How to Run
+---
 
-### Backend Setup
+## ⚙️ Installation
 
-```bash
-cd Backend
+### 1. Backend
+
+cd backend
 pip install -r requirements.txt
-python manage.py runserver
+python app.py
+
+Server URL: http://localhost:5000
+
+### 2. Frontend
+Open frontend/index.html in any browser
+
+### 3. ESP32
+Open hardware/esp32_kiosk.ino in Arduino IDE
+Upload to ESP32
