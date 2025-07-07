@@ -39,9 +39,9 @@ LatrosFlow/
 
 ## 🧰 Tech Stack
 
-- Frontend: HTML, CSS, Bootstrap, JavaScript
-- Backend: Python (Flask or Django)
-- Database: MySQL / SQLite
+- Frontend: HTML, CSS, JavaScript
+- Backend: Python (Flask)
+- Database: SQLite
 - IoT: ESP32 with sensors (DHT22, Pulse, etc.)
 - Communication: REST API / Serial
 
@@ -53,6 +53,7 @@ LatrosFlow/
 
 cd backend
 pip install -r requirements.txt
+
 python app.py
 
 Server URL: http://localhost:5000
@@ -62,4 +63,5 @@ Open frontend/index.html in any browser
 
 ### 3. ESP32
 Open hardware/esp32_kiosk.ino in Arduino IDE
+
 Upload to ESP32
