@@ -52,9 +52,10 @@ LatrosFlow/
 ### 1. Backend
 
 cd backend
+```bash
 pip install -r requirements.txt
-
 python app.py
+```
 
 Server URL: http://localhost:5000
 
